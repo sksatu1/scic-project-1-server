@@ -79,6 +79,16 @@ async function run() {
         });
 
         // post API -------------------------
+        app.post('/books', async (req, res) => {
+            const newProduct = req.body;
+            const result = await booksCollection.insertOne(newProduct);
+
+            console.log('got new product', req.body);
+            console.log('added product', result);
+            res.json(result);
+        })
+
+        // post API -------------------------
         app.post('/reviews', async (req, res) => {
             const review = req.body;
             console.log(review);
@@ -122,6 +132,15 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await ordersCollection.deleteOne(query);
             console.log('deleting user with id : ', result);
+            res.json(result);
+        });
+
+        // delete API ------------------------
+        app.delete('/books/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await booksCollection.deleteOne(query);
+            console.log('deleting book with id : ', result);
             res.json(result);
         });
     }
